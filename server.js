@@ -30,8 +30,8 @@ app.post('/api/v1/users', async (req, res, next) => {
             userId: result._id,
         });
 
-        emailServe.sendOtp({ reciver: req.body.email, otp: `http://localhost:3000/otp/${otpDoc._id}/${otpDoc.otp}` });
-      
+        emailServe.sendOtp({ reciver: result.email, otp: `http://localhost:3000/otp/${otpDoc._id}/${otpDoc.otp}` });
+
         res.json({ uid: otpDoc._id });
 
     } catch (error) {
@@ -53,6 +53,8 @@ app.put('/api/v1/users/:id', async (req, res, next) => {
     }
 });
 
+
+
 // otp check
 app.get('/otp/:id/:otp', async (req, res) => {
     try {
@@ -64,7 +66,7 @@ app.get('/otp/:id/:otp', async (req, res) => {
             const removeOtp = Otp.findByIdAndRemove(otpObj?._id);
         }, 3000);
 
-        
+
         if (!otpObj) {
             console.log('Invalid Link')
             return res.status(400).send(`
@@ -81,7 +83,7 @@ app.get('/otp/:id/:otp', async (req, res) => {
             `);
         }
 
-    
+
 
         return res.status(400).send(`
             <h1>Invalid Link</h1>
@@ -102,6 +104,10 @@ app.post('/login', async (req, res) => {
             console.error('user not found');
             return res.status(400).json({ message: 'user not found' });
         }
+        if (!doc.isVerified) {
+            console.log('user not verified');
+            return res.status(400).json({ message: 'user not verified' });
+        }
         const hashPassword = doc[0].password;
         const isPasswordMatching = await passwordServe.password(req.body.password, hashPassword);
 
@@ -120,7 +126,9 @@ app.post('/login', async (req, res) => {
         console.error(error);
         res.status(500).json(error);
     }
-})
+});
+
+
 
 const PORT = 3000;
 
