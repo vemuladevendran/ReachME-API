@@ -60,12 +60,7 @@ app.get('/otp/:id/:otp', async (req, res) => {
     try {
         const otpObj = await Otp.findById(req.params.id);
 
-        // delete OTP after 10 minutes
-
-        setTimeout(() => {
-            const removeOtp = Otp.findByIdAndRemove(otpObj?._id);
-        }, 3000);
-
+        console.log(otpObj)
 
         if (!otpObj) {
             console.log('Invalid Link')
@@ -99,26 +94,31 @@ app.get('/otp/:id/:otp', async (req, res) => {
 
 app.post('/login', async (req, res) => {
     try {
-        const doc = await User.find({ email: req.body.email })
+        const doc = await User.findOne({ email: req.body.email })
         if (!doc) {
             console.error('user not found');
-            return res.status(400).json({ message: 'user not found' });
+            return res.status(400).json({ message: 'Invalid Details' });
         }
-        if (!doc.isVerified) {
-            console.log('user not verified');
-            return res.status(400).json({ message: 'user not verified' });
-        }
-        const hashPassword = doc[0].password;
+
+        const hashPassword = doc.password;
         const isPasswordMatching = await passwordServe.password(req.body.password, hashPassword);
 
         if (!isPasswordMatching) {
             console.error('password wrong');
-            return res.status(400).json({ message: 'password wrong' });
+            return res.status(400).json({ message: 'Invalid Details' });
 
         }
 
-        const token = Token.generate({ id: doc._id, });
 
+        if (!doc.isVerified) {
+            console.log('user not verified');
+            return res.status(400).json({ message: 'user not verified' });
+        }
+
+
+
+
+        const token = Token.generate({ id: doc._id, });
 
         return res.json({ token: token });
 
@@ -127,6 +127,25 @@ app.post('/login', async (req, res) => {
         res.status(500).json(error);
     }
 });
+
+
+// verify user
+
+app.post('/verify', async (req, res) => {
+    try {
+
+        const doc = await User.findOne({ email: req.body.email });
+        const otpDoc = await Otp.create({
+            otp: otpGenerator.generate(6, { upperCase: false, alphabets: false, specialChars: false }),
+            userId: doc._id,
+        });
+
+        emailServe.sendOtp({ reciver: doc.email, otp: `http://localhost:3000/otp/${otpDoc._id}/${otpDoc.otp}` });
+
+    } catch (error) {
+
+    }
+})
 
 
 
