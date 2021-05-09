@@ -13,6 +13,7 @@ const cors = require('cors');
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+require('./routes/students')(app);
 
 
 // insert data
@@ -114,10 +115,6 @@ app.post('/login', async (req, res) => {
             console.log('user not verified');
             return res.status(400).json({ message: 'user not verified' });
         }
-
-
-
-
         const token = Token.generate({ id: doc._id, });
 
         return res.json({ token: token });
