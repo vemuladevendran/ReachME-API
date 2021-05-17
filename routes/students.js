@@ -19,7 +19,7 @@ module.exports = function (app) {
             const result = await Student.create(req.body);
 
             res.json(result);
-    
+
         } catch (error) {
             console.log(error);
             res.status(500).json({ message: error.message, code: 'INTERNAL_ERROR' });
@@ -27,45 +27,51 @@ module.exports = function (app) {
     });
 
 
-   
-// retrive data
 
-app.get('/api/v1/students', async (req, res, next) => {
-    try {
-        const data = await Student.find({});
-        res.json(data);
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: error.message });
-    }
-});
+    // retrive data
 
-// update data
+    app.get('/api/v1/students', async (req, res, next) => {
+        try {
+            const q = {};
 
-app.put('/api/v1/students/:id', async (req, res, next) => {
-    try {
+            if (req.query.year) {
+                q.year = Array.isArray(req.query.year) ? { $in: req.query.year }: req.query.year;
+            };
 
-        const results = await Student.findByIdAndUpdate(req.params.id, req.body, { new: true });
-        res.json(results);
+            const data = await Student.find(q);
+            res.json(data);
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ message: error.message });
+        }
+    });
 
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: error.message });
-    }
-});
+    // update data
 
-// Delete data
+    app.put('/api/v1/students/:id', async (req, res, next) => {
+        try {
 
-app.delete('/api/v1/students/:id', async (req, res, next) => {
-    try {
+            const results = await Student.findByIdAndUpdate(req.params.id, req.body, { new: true });
+            res.json(results);
 
-        const results = await Student.findByIdAndRemove(req.params.id);
-        res.json({ message: results.firstName + 'student deleted' });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: error.message });
+        }
+    });
 
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: error.message });
-    }
-});
+    // Delete data
+
+    app.delete('/api/v1/students/:id', async (req, res, next) => {
+        try {
+
+            const results = await Student.findByIdAndRemove(req.params.id);
+            res.json({ message: results.firstName + 'student deleted' });
+
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: error.message });
+        }
+    });
 
 }
