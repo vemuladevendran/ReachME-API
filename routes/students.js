@@ -35,8 +35,12 @@ module.exports = function (app) {
             const q = {};
 
             if (req.query.year) {
-                q.year = Array.isArray(req.query.year) ? { $in: req.query.year }: req.query.year;
+                q.year = req.query.year;
             };
+
+            if (req.query.branch) {
+                q.branch = req.query.branch;
+            }
 
             const data = await Student.find(q);
             res.json(data);

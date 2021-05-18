@@ -9,8 +9,10 @@ const emailServe = require('./services/email');
 const passwordServe = require('./services/password');
 const Token = require('./services/token');
 const app = express();
+const morgan = require('morgan')
 const cors = require('cors');
 app.use(cors());
+app.use(morgan('tiny'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 require('./routes/students')(app);
