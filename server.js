@@ -16,6 +16,7 @@ app.use(morgan('tiny'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 require('./routes/students')(app);
+require('./routes/report')(app);
 
 
 // insert data
