@@ -1,4 +1,4 @@
-const Reports = require('express');
+const Reports = require('../model/report');
 
 module.exports = function(app) {
 
