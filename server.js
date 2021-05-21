@@ -96,7 +96,7 @@ app.get('/otp/:id/:otp', async (req, res) => {
 
 // login check
 
-app.post('/login', async (req, res) => {
+app.post('/api/v1/login', async (req, res) => {
     try {
         const doc = await User.findOne({ email: req.body.email })
         if (!doc) {
@@ -131,7 +131,7 @@ app.post('/login', async (req, res) => {
 
 // verify user
 
-app.post('/verify', async (req, res) => {
+app.post('/api/v1/verify', async (req, res) => {
     try {
 
         const doc = await User.findOne({ email: req.body.email });
@@ -153,4 +153,4 @@ const PORT = 3000;
 
 app.listen(PORT, () => {
     console.log(`server is listering on the PORT ${PORT}`);
-})
+});
