@@ -152,7 +152,7 @@ app.post('/api/v1/verify', async (req, res) => {
 
 
 
-const PORT = 5000;
+const port = process.env.PORT || 5000
 
 app.listen(PORT, () => {
     console.log(`server is listering on the PORT ${PORT}`);
