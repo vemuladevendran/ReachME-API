@@ -17,6 +17,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 require('./routes/students')(app);
 require('./routes/report')(app);
+require('./routes/forget-password')(app);
+
+
 
 
 // insert data
