@@ -37,7 +37,8 @@ app.post('/api/v1/users', async (req, res, next) => {
             userId: result._id,
         });
 
-        emailServe.sendOtp({ reciver: result.email, otp: `http://pecstudents.herokuapp.com/otp/${otpDoc._id}/${otpDoc.otp}` });
+        emailServe.sendOtp({ reciver: doc.email, otp: `https://pecstudents.herokuapp.com/otp/${otpDoc._id}/${otpDoc.otp}` });
+        // emailServe.sendOtp({ reciver: result.email, otp: `http://localhost:5000/otp/${otpDoc._id}/${otpDoc.otp}` });
 
         res.json({ uid: otpDoc._id });
 
@@ -143,7 +144,8 @@ app.post('/api/v1/verify', async (req, res) => {
             userId: doc._id,
         });
 
-        emailServe.sendOtp({ reciver: doc.email, otp: `http://pecstudents.herokuapp.com/otp/${otpDoc._id}/${otpDoc.otp}` });
+        emailServe.sendOtp({ reciver: doc.email, otp: `https://pecstudents.herokuapp.com/otp/${otpDoc._id}/${otpDoc.otp}` });
+        // emailServe.sendOtp({ reciver: doc.email, otp: `http://localhost:5000/otp/${otpDoc._id}/${otpDoc.otp}` });
 
     } catch (error) {
 
