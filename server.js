@@ -139,6 +139,7 @@ app.post('/api/v1/verify', async (req, res) => {
     try {
 
         const doc = await User.findOne({ email: req.body.email });
+        console.log(doc);
         const otpDoc = await Otp.create({
             otp: otpGenerator.generate(6, { upperCase: false, alphabets: false, specialChars: false }),
             userId: doc._id,
