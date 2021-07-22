@@ -20,9 +20,9 @@ module.exports = function (app) {
                 otp: otpGenerator.generate(6, { upperCase: false, alphabets: false, specialChars: false }),
                 userId: doc._id,
             });
-            emailServe.sendOtp({ reciver: doc.email, otp: `http://localhost:3000/passwordOtp/${otpDoc._id}/${otpDoc.otp}` });
+            emailServe.sendOtp({ reciver: doc.email, otp: `http://localhost:5000/passwordOtp/${otpDoc._id}/${otpDoc.otp}` });
 
-            res.json(doc);
+            res.json(doc.email);
 
         } catch (error) {
             console.error(error);
