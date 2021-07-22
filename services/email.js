@@ -6,14 +6,14 @@ const transporter = nodemailer.createTransport({
     port: 587,
     secure: true,
     auth: {
-        user: 'devagopi101@gmail.com',
-        pass: '27082002devendranit'
+        user: 'devendranvemula@gmail.com',
+        pass: 'wvfocfhsqqvkxikc'
     }
 });
 
 const sendOtp = ({ reciver, otp }) => {
     const mailOptions = {
-        from: 'devagopi101@gmail.com',
+        from: 'devendranvemula@gmail.com',
         to: reciver,
         subject: 'OTP',
         text: otp,
