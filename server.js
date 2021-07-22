@@ -37,7 +37,7 @@ app.post('/api/v1/users', async (req, res, next) => {
             userId: result._id,
         });
 
-        emailServe.sendOtp({ reciver: doc.email, otp: `https://pecstudents.herokuapp.com/otp/${otpDoc._id}/${otpDoc.otp}` });
+        emailServe.sendOtp({ reciver: req.body.email, otp: `https://pecstudents.herokuapp.com/otp/${otpDoc._id}/${otpDoc.otp}` });
         // emailServe.sendOtp({ reciver: result.email, otp: `http://localhost:5000/otp/${otpDoc._id}/${otpDoc.otp}` });
 
         res.json({ uid: otpDoc._id });
